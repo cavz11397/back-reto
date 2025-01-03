@@ -1,0 +1,6 @@
+database:
+  user: alejo
+  password: alejo
+  host: localhost
+  name: reto
+  port: 5432
