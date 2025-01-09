@@ -1,10 +1,11 @@
-from typing import Optional
-from app.domain.entities.login import LoginDTO
-from app.domain.usecases.authenticateUser import AuthenticateUserUseCase
+from app.infraestructure.repositories.loginRepository import LoginRepository
 
 class LoginService:
-    def __init__(self, authenticate_user_use_case: AuthenticateUserUseCase):
-        self.authenticate_user_use_case = authenticate_user_use_case
+    def __init__(self, repository: LoginRepository):
+        self.repository = repository
 
-    def authenticate(self, username: str, password: str) -> Optional[LoginDTO]:
-        return self.authenticate_user_use_case.authenticate(username, password)
+    def authenticate(self, username: str, password: str):
+        user = self.repository.get_user_by_username(username)
+        if user and user.verify_password(password):
+            return user
+        return None
