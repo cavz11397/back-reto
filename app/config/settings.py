@@ -25,3 +25,9 @@ DATABASE_URL = (
     f"postgresql://{config['database']['user']}:{config['database']['password']}"
     f"@{config['database']['host']}:{config['database']['port']}/{config['database']['name']}"
 )
+
+SECRET_KEY = config['security']['secret_key']
+
+ACCOUNTS_ROUTES = config['rutas']['accounts']
+INVENTORY_ROUTES = config['rutas']['inventory']
+ITEMS_ROUTES = config['rutas']['items']

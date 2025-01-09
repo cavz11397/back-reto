@@ -4,3 +4,15 @@ database:
   host: localhost
   name: reto
   port: 5432
+
+security:
+  secret_key: "aP3!x9@Q#z$2wE1^tY7&uI8*oL0%rF4+vB5~mN6"
+
+rutas:
+  accounts:
+    get_all: "/accounts/get_all"
+    get_by_id: "/accounts/get_by_id"
+  inventory: 
+    get_all: "/inventories"
+  items:
+    get_all: "/items"
