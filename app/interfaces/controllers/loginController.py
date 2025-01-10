@@ -16,4 +16,4 @@ def login(user: User, db: Session = Depends(get_db)):
     userdb = service.authenticate(user.username, user.password)
     if not userdb:
         raise HTTPException(status_code=403, detail="Invalid username or password")
-    return {"token": createToken(user.dict()), "account":userdb.account}
+    return {"token": createToken(user.dict()), "account":userdb.account, "role":userdb.role}

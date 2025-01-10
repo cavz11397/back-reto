@@ -11,3 +11,4 @@ class Permission(Base):
     endpoint = Column(String)  
     description = Column(String)  
     id_account = Column(String, ForeignKey('accounts.id_account'))
+    id_role = Column(String, ForeignKey('role.id_role'))

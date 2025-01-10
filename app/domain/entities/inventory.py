@@ -1,9 +1,10 @@
-from dataclasses import dataclass
+# from dataclasses import dataclass
+from pydantic import BaseModel, Field
+from uuid import uuid4
 
 
-@dataclass
-class InventoryDTO:
-    id_inventory: str
+class InventoryDTO(BaseModel):
+    id_inventory: str = Field(default_factory=lambda: str(uuid4()))
     id_account: str
     name: str
     description: str
