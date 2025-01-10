@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.infraestructure.db.db import get_db
 from sqlalchemy.exc import SQLAlchemyError
@@ -9,6 +10,20 @@ from app.interfaces.controllers.inventoryController import router as inventoryRo
 from app.interfaces.controllers.itemInventoryController import router as itemInventoryRouter
 
 app=FastAPI()
+
+# Configuración de CORS
+origins = [
+    "http://localhost:4200",
+    # Agrega aquí otros orígenes permitidos si es necesario
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Registrar las rutas
 app.include_router(loginRouter)

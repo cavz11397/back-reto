@@ -6,59 +6,25 @@ from app.infraestructure.repositories.itemInventoryRepository import ItemReposit
 from app.infraestructure.services.ItemInventoryService import ItemService
 from app.interfaces.middlewares.middleware import BearerJWT
 from app.config.settings import ITEMS_ROUTES
+from app.security.permissions import has_permissions
 
 router = APIRouter()
 
-@router.get(ITEMS_ROUTES['get_all'], tags=["items"], dependencies=[Depends(BearerJWT())])
-def get_all_items(owner: str = Query(...), role: str = Query(...), db: Session = Depends(get_db)):
-    # Verificar permisos
-    # if not has_permission(owner_role):
-    #     raise HTTPException(status_code=403, detail="Permission denied")
+@router.get(ITEMS_ROUTES['get_by_inventory'], tags=["items"], dependencies=[Depends(BearerJWT())])
+def get_all_items(account_id: str = Query(...), id_role: str = Query(...), id_inventory: str = Query(...), db: Session = Depends(get_db)):
+    if not has_permissions(db, account_id, id_role, ITEMS_ROUTES['get_by_inventory']):
+        raise HTTPException(status_code=403, detail="Permission denied")
     repository = ItemRepository(db)
     service = ItemService(repository)
-    return service.get_all_items()
+    items = service.get_all_items_by_inventory(id_inventory)
+    if not items:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return items
 
-# @router.get("/items/{item_id}", tags=["items"])
-# def get_item_by_id(item_id: str, db: Session = Depends(get_db)):
-#     repository = ItemRepository(db)
-#     service = ItemService(repository)
-#     item = service.get_item_by_id(item_id)
-#     if not item:
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     return item
-
-# @router.post("/items", tags=["items"])
-# def create_item(item: InventoryItemDTO, db: Session = Depends(get_db)):
-#     repository = ItemRepository(db)
-#     service = ItemService(repository)
-#     return service.create_item(
-#         id_item=item.id_item,
-#         id_inventory=item.id_inventory,
-#         name=item.name,
-#         quantity=item.quantity,
-#         price=item.price
-#     )
-
-# @router.put("/items/{item_id}", tags=["items"])
-# def update_item(item_id: str, item: InventoryItem, db: Session = Depends(get_db)):
-#     repository = ItemRepository(db)
-#     service = ItemService(repository)
-#     updated_item = service.update_item(
-#         item_id,
-#         id_inventory=item.id_inventory,
-#         name=item.name,
-#         quantity=item.quantity,
-#         price=item.price
-#     )
-#     if not updated_item:
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     return updated_item
-
-# @router.delete("/items/{item_id}", tags=["items"])
-# def delete_item(item_id: str, db: Session = Depends(get_db)):
-#     repository = ItemRepository(db)
-#     service = ItemService(repository)
-#     deleted_item = service.delete_item(item_id)
-#     if not deleted_item:
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     return {"detail": "Item deleted successfully"}
+@router.post(ITEMS_ROUTES['create'], tags=["items"], dependencies=[Depends(BearerJWT())])
+def create_items(items: list[InventoryItemDTO], account_id: str = Query(...), id_role: str = Query(...), db: Session = Depends(get_db)):
+    if not has_permissions(db, account_id, id_role,ITEMS_ROUTES['create']):
+        raise HTTPException(status_code=403, detail="Permission denied")
+    repository = ItemRepository(db)
+    service = ItemService(repository)
+    return service.create_items(items)

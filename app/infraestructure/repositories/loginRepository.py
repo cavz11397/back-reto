@@ -7,4 +7,8 @@ class LoginRepository:
 
     def get_user_by_username(self, username: str):
         from app.infraestructure.db.accounts import Account 
-        return self.session.query(Login).filter_by(username=username).options(joinedload(Login.account)).first()
+        from app.infraestructure.db.role import Role
+        return self.session.query(Login).filter_by(username=username).options(
+            joinedload(Login.account),
+            joinedload(Login.role)
+        ).first()
