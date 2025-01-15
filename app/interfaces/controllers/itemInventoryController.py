@@ -28,3 +28,14 @@ def create_items(items: list[InventoryItemDTO], account_id: str = Query(...), id
     repository = ItemRepository(db)
     service = ItemService(repository)
     return service.create_items(items)
+
+@router.delete(ITEMS_ROUTES['delete'], tags=["items"], dependencies=[Depends(BearerJWT())])
+def delete_item(item_id:  str = Query(...), account_id: str = Query(...), id_role: str = Query(...), db: Session = Depends(get_db)):
+    if not has_permissions(db, account_id, id_role, ITEMS_ROUTES['delete']):
+        raise HTTPException(status_code=403, detail="Permission denied")
+    repository = ItemRepository(db)
+    service = ItemService(repository)
+    success = service.delete_item(item_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"detail": "Item deleted successfully"}

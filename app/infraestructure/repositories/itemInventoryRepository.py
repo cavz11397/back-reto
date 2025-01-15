@@ -13,7 +13,7 @@ class ItemRepository:
         return self.session.query(InventoryItem).filter_by(id_item=item_id).first()
 
     def add_item(self, item_dto: InventoryItemDTO):
-        item = Item(
+        item = InventoryItem(
             id_item=item_dto.id_item,
             id_inventory=item_dto.id_inventory,
             name=item_dto.name,
@@ -22,3 +22,11 @@ class ItemRepository:
         )
         self.session.add(item)
         self.session.commit()
+
+    def delete_item(self, item_id: str):
+        item = self.get_item_by_id(item_id)
+        if item:
+            self.session.delete(item)
+            self.session.commit()
+            return True
+        return False

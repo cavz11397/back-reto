@@ -17,3 +17,6 @@ class ItemService:
         for item in items:
             self.repository.add_item(item)
         return {"detail": "Items created successfully"}
+    
+    def delete_item(self, item_id: str):
+        return self.repository.delete_item(item_id)

@@ -20,4 +20,3 @@ rutas:
   items:
     get_by_inventory: "/items/get_by_inventory"
     create: "/items/massive"
-    delete: "/items/delete"
