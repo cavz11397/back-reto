@@ -1,12 +1,12 @@
 database:
   user: alejo
-  password: alejo
-  host: localhost
-  name: reto
+  password: pScq43EKVh0zw2lhbDUripR259ysIWZI
+  host: dpg-cu3sa23tq21c73ar0p7g-a.oregon-postgres.render.com
+  name: retobd_w7s5
   port: 5432
 
 security:
-  secret_key: "=+&O]Oqb;aAg750H-JUzeG+-9&Tu~!gO"
+  secret_key: "aP3!x9@Q#z$2wE1^tY7&uI8*oL0%rF4+vB5~mN6"
 
 rutas:
   accounts:
@@ -20,4 +20,3 @@ rutas:
   items:
     get_by_inventory: "/items/get_by_inventory"
     create: "/items/massive"
-    delete: "/items/delete"
