@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import declarative_base
 from app.config.settings import DATABASE_URL
 
 # Crea el motor de SQLAlchemy
@@ -12,7 +11,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Crea una clase base para las definiciones de modelos
 Base = declarative_base()
-
 
 def get_db():
     db = SessionLocal()
